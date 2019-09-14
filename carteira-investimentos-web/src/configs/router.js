@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Cadastro from './screens/usuario/Cadastro'
-import Login from './screens/usuario/Login'
+import Cadastro from '../screens/usuario/Cadastro'
+import Login from '../screens/usuario/Login'
 
 Vue.use(Router);
 

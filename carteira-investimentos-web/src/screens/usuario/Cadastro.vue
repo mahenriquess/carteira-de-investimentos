@@ -1,36 +1,37 @@
 <template>
     <div>
+        <Loading v-bind:activate="loading"/>
         <b-row>
         </b-row>
         <b-form>
             <b-row class="items-space">
                 <b-col>
-                    <label  for="text-password">Nome</label>
+                    <label>Nome</label>
                     <b-input v-model="usuario.nome" type="text"></b-input>
                 </b-col>
                 <b-col>
-                    <label for="text-password">Sobrenome</label>
+                    <label>Sobrenome</label>
                     <b-input v-model="usuario.sobrenome" type="text"></b-input>
                 </b-col>
             </b-row>
             <b-row class="items-space">
                 <b-col>
-                    <label for="text-password">Email</label>
-                    <b-input v-model="usuario.email" type="mail"></b-input>
+                    <label>Email</label>
+                    <b-input v-model="usuario.email" type="email"></b-input>
                 </b-col>
             </b-row>
             <b-row class="items-space">
                 <b-col>
-                    <label for="text-password">Senha</label>
-                    <b-input v-model="usuario.senha" type="password" id="text-password"></b-input>
-                    <b-form-text id="password-help-block">
+                    <label>Senha</label>
+                    <b-input v-model="usuario.senha" type="password"></b-input>
+                    <b-form-text >
                         Sua senha deve ter entre 5 e 15 caracteres, contendo letras minisculas, maisculas e caracteres especiais
                     </b-form-text>
                 </b-col>
                 <b-col>
-                    <label for="text-password">Confirmação de senha</label>
+                    <label>Confirmação de senha</label>
                     <b-input type="password" id="text-password"></b-input>
-                    <b-form-text id="password-help-block">
+                    <b-form-text >
                         Este campo deve ser exatamente ao digitado no campo de senha
                     </b-form-text>
                 </b-col>
@@ -45,12 +46,24 @@
         <center>
             <router-link to="/"><p>Ja tem uma conta ?</p></router-link>
         </center>
+
+        <b-button @click="goToLogin">Voltar</b-button>
+
+
+        <b-modal id="modalTeste" title="Status Cadastro" ok-only  @ok="callbackOkMessage">
+            <p class="my-4">{{statusCadastro}}</p>
+        </b-modal>
     </div>
 </template>
 
 <script>
-    import client from '../../client';
+    import client from '../../configs/client';
+    import Loading from '../../components/Loading';
+
     export default {
+        components: {
+            Loading
+        },
         data() {
             return {
                 usuario: {
@@ -58,18 +71,40 @@
                     sobrenome: "",
                     email: "",
                     senha: ""
+                },
+                loading:false,
+                statusCadastro:'',
+                callbackOkMessage: () => {
                 }
-
             }
         },
         methods: {
-            async cadastrar() {
-                try {
-                    const response = await client.post('/signup',this.usuario);
-                    console.log(response);
-                }catch(err) {
-                    console.log("Erro comunicacao: "+err);
-                } 
+            cadastrar() {
+                this.loading = true;
+                client.post('/signup',this.usuario)
+                    .then(_ => {
+                        this.statusCadastro = 'Cadastrado com sucesso';
+                        this.callbackOkMessage = this.goToLogin;
+                        
+                        this.$bvModal.show("modalTeste");
+                        
+                        console.log('Cadastro efeturado');
+                    })
+                    .catch(err => {
+                        this.callbackOkMessage = this.closeModal();
+                        this.statusCadastro = 'Erro no cadastro';
+                        this.$bvModal.show("modalTeste");
+                        console.log('Cadastro não efeturado');
+                    })
+                    .finally(_ => {
+                        this.loading = false;
+                    });
+            },
+            goToLogin() {
+                this.$router.push('/');
+            },
+            closeModal() {
+                this.$bvModal.hide("modalTeste");
             }
         }
     }

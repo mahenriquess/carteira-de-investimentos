@@ -2,8 +2,6 @@
   <div>
     <Navbar />
     <b-container id="app">
-      <!-- <img alt="Vue logo" src="./assets/logo.png">
-      <HelloWorld msg="Welcome to Your Vue.js App"/> -->
       <router-view></router-view>
     </b-container>
   </div>
@@ -12,7 +10,7 @@
 <script>
 
 import Navbar from './components/Navbar';
-import client from './client';
+import client from './configs/client';
 
 client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 

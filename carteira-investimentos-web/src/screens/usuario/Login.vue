@@ -1,5 +1,10 @@
 <template>
     <div>
+        <Loading v-bind:activate="loading"/>
+        <b-alert v-model="loginSuccess" variant="success" show>Logado com sucesso</b-alert>
+        <b-alert v-model="loginError" variant="danger" dismissible>
+            Erro ao efeturar login
+        </b-alert>
         <b-row>
             <b-col class="text-center">
                 <img id="image-login" v-bind:src="imageLogin">
@@ -38,21 +43,37 @@
 
 <script>
     import imageLogin from '../../assets/img/login_icon.png';
-    import client from '../../client';
+    import client from '../../configs/client';
+    import Loading from '../../components/Loading';
     export default {
+        components: {Loading},
         data() {
             return {
                 imageLogin,
                 usuario: {
                     email: "",
                     senha: "",
-                }
+                },
+                loading: false,
+                loginSuccess: false,
+                loginError: false,
             }
         },
         methods: {
             async logar() {
-                const response = await client.post('/signin',this.usuario);
-                console.log(response);
+                this.loading = true;
+
+                client.post('/signin', this.usuario)
+                    .then(res => {
+                        this.loginSuccess =true;
+                        this.loginError = false;
+                    })
+                    .catch(err => {
+                        this.loginError = true;
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
             }
         }
     }
