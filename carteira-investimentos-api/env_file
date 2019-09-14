@@ -1,3 +1,4 @@
 module.export = {
-    authSecret: ''
+    authSecret: '',
+    serverPort: 3000
 }
