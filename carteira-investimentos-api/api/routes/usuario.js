@@ -1,0 +1,9 @@
+module.exports = app => {
+    app.post('/signup', (req, res) => {
+        app.api.controllers.usuario.signup(app, req, res);
+    });
+
+    app.post('/signin', (req, res) => {
+        app.api.controllers.usuario.signin(app, req, res);
+    });
+}
