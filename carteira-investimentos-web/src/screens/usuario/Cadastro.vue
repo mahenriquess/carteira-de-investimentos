@@ -79,10 +79,10 @@
             }
         },
         methods: {
-            cadastrar() {
+            async cadastrar() {
                 this.loading = true;
-                client.post('/signup',this.usuario)
-                    .then(_ => {
+                await client.post('/signup',this.usuario)
+                    .then(()=> {
                         this.statusCadastro = 'Cadastrado com sucesso';
                         this.callbackOkMessage = this.goToLogin;
                         
@@ -94,9 +94,9 @@
                         this.callbackOkMessage = this.closeModal();
                         this.statusCadastro = 'Erro no cadastro';
                         this.$bvModal.show("modalTeste");
-                        console.log('Cadastro não efeturado');
+                        console.log('Cadastro não efeturado: '+err.response);
                     })
-                    .finally(_ => {
+                    .finally(() => {
                         this.loading = false;
                     });
             },

@@ -11,10 +11,14 @@
                 <b-dropdown-item href="#">RU</b-dropdown-item>
                 <b-dropdown-item href="#">FA</b-dropdown-item>
             </b-nav-item-dropdown>
-
-            <b-nav-item-dropdown text="User" right>
+            
+            <b-nav-item-dropdown v-if="!userIsLogged" text="User" right>
                 <b-dropdown-item href="#">Account</b-dropdown-item>
                 <b-dropdown-item href="#">Settings</b-dropdown-item>
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown v-if="userIsLogged" :text="nomeUsuarioLogado" right>
+                <b-dropdown-item @click="deslogar">Deslogar</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-navbar>
@@ -23,7 +27,17 @@
 
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    props: [
+        'nomeUsuarioLogado',
+        'userIsLogged',
+    ],
+    methods: {
+        deslogar() {
+            this.$cookies.remove('usuario');
+            this.$parent.updateUsuarioLogado();
+        }
+    }
 }
 </script>
 

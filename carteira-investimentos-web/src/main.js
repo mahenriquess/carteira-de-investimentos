@@ -9,9 +9,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
-Vue.use(Loading);
+import VueCookies from 'vue-cookies';
 
+Vue.use(Loading);
 Vue.use(BootstrapVue);
+Vue.use(VueCookies);
 
 Vue.config.productionTip = false
 

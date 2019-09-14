@@ -57,19 +57,25 @@
                 loading: false,
                 loginSuccess: false,
                 loginError: false,
+                usuarioLogado: ''
             }
         },
         methods: {
             async logar() {
                 this.loading = true;
 
-                client.post('/signin', this.usuario)
-                    .then(res => {
-                        this.loginSuccess =true;
+                await client.post('/signin', this.usuario)
+                    .then(({ data }) => {
+                        console.log(data);
+                        this.$cookies.set('usuario', data, {expires: '30s'});
+                        this.$parent.updateUsuarioLogado();
                         this.loginError = false;
+                        this.loginSuccess = true;
                     })
                     .catch(err => {
+                        this.loginSuccess = false;
                         this.loginError = true;
+                        console.log("Erro no login: " +err.response);
                     })
                     .finally(() => {
                         this.loading = false;
