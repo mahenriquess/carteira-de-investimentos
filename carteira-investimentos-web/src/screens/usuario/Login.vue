@@ -71,6 +71,8 @@
                         this.$parent.updateUsuarioLogado();
                         this.loginError = false;
                         this.loginSuccess = true;
+
+                        this.redirectToIndex();
                     })
                     .catch(err => {
                         this.loginSuccess = false;
@@ -80,6 +82,12 @@
                     .finally(() => {
                         this.loading = false;
                     });
+            },
+
+            redirectToIndex(){
+                setTimeout(() => {
+                    this.$router.push('/');
+                }, 2000);
             }
         }
     }

@@ -11,6 +11,7 @@
 
 import Navbar from './components/Navbar';
 import client from './configs/client';
+import usuarioHelper from './helpers/usuarioHelper';
 
 client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
@@ -27,15 +28,11 @@ export default {
 		}
 	},
     methods: {
-		hasCookiesUsuario() {
-            const usuario = this.getCookies();
-            if(usuario) return true; else return false;
-        },
         getCookies() {
             return this.$cookies.get('usuario');
 		},
 		updateUsuarioLogado() {
-			if(this.hasCookiesUsuario()){
+			if(usuarioHelper.isLogged()){
 				const usuario = this.getCookies();
 				this.nomeUsuarioLogado = usuario.nome;
 				this.userIsLogged = true;
