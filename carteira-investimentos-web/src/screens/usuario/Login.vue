@@ -30,7 +30,7 @@
             </b-row>
             <b-row class="items-space">
                 <b-col>
-                    <b-button @click="logar" block variant="primary">Logar</b-button>
+                    <b-button @click="login(usuario)" block variant="primary">Logar</b-button>
                 </b-col>
             </b-row>
             
@@ -38,14 +38,22 @@
         <center>
             <router-link to="/cadastro"><p>Ainda não tem uma conta ?</p></router-link>
         </center>
+        {{ $store.state.usuario.isLogged }}
     </div>
 </template>
 
 <script>
     import imageLogin from '../../assets/img/login_icon.png';
-    import client from '../../configs/client';
+    
     import Loading from '../../components/Loading';
+
+    import { mapState } from 'vuex';
+    import { mapActions } from 'vuex';
+
     export default {
+        /*computed: mapState({
+            login: state => state.count
+        }),*/
         components: {Loading},
         data() {
             return {
@@ -60,8 +68,11 @@
                 usuarioLogado: ''
             }
         },
-        methods: {
-            async logar() {
+        methods:  mapActions([
+            'login'
+        ])
+        
+           /* async logar() {
                 this.loading = true;
 
                 await client.post('/signin', this.usuario)
@@ -89,7 +100,7 @@
                     this.$router.push('/');
                 }, 2000);
             }
-        }
+        }*/
     }
 </script>
 

@@ -10,7 +10,7 @@
                 <b-dropdown-item href="#">Settings</b-dropdown-item>
             </b-nav-item-dropdown> -->
 
-            <b-nav-item-dropdown v-if="userIsLogged" :text="nomeUsuarioLogado" right>
+            <b-nav-item-dropdown v-if="$store.state.usuario.isLogged" :text="$store.state.usuario.nome" right>
                 <b-dropdown-item @click="deslogar">Deslogar</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>

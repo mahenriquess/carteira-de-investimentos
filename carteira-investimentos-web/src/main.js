@@ -14,6 +14,8 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
 import HighchartsVue from 'highcharts-vue'
 
+import store from './stores/usuarioStore';
+
 
 Vue.use(VueCookies);
 Vue.use(Loading);
@@ -24,5 +26,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
