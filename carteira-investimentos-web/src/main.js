@@ -14,7 +14,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 
 import HighchartsVue from 'highcharts-vue'
 
-import store from './stores/usuarioStore';
+import store from './store/store';
 
 
 Vue.use(VueCookies);

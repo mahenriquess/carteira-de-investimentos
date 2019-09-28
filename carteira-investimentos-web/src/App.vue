@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Navbar v-bind:nomeUsuarioLogado="nomeUsuarioLogado" v-bind:userIsLogged="userIsLogged" />
+		<Navbar :usuarioIsLogged="usuarioIsLogged"/>
 		<b-container id="app">
 			<router-view></router-view>
 		</b-container>
@@ -11,36 +11,23 @@
 
 import Navbar from './components/Navbar';
 import client from './configs/client';
-import usuarioHelper from './helpers/usuarioHelper';
 
 client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
 export default {
 	created() {
-		this.updateUsuarioLogado();
+		this.$store.dispatch('atualizaUsuarioLogado');
+	},
+	computed:{
+		usuarioIsLogged() {
+			return this.$store.getters.usuarioIsLogged;
+		}
+		
 	},
     components: { Navbar },
 	name: 'app',
-	data() {
-		return {
-			nomeUsuarioLogado: '',
-			userIsLogged: false,
-		}
-	},
     methods: {
-        getCookies() {
-            return this.$cookies.get('usuario');
-		},
-		updateUsuarioLogado() {
-			if(usuarioHelper.isLogged()){
-				const usuario = this.getCookies();
-				this.nomeUsuarioLogado = usuario.nome;
-				this.userIsLogged = true;
-			}else{
-				this.nomeUsuarioLogado = "";
-				this.userIsLogged = false;
-			}
-		}
+
     }
 }
 </script>

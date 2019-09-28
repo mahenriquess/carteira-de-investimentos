@@ -1,10 +1,7 @@
 <template>
     <div>
-        <Loading v-bind:activate="loading"/>
-        <b-alert v-model="loginSuccess" variant="success" show>Logado com sucesso</b-alert>
-        <b-alert v-model="loginError" variant="danger" dismissible>
-            Erro ao efeturar login
-        </b-alert>
+        <Loading v-bind:activate="$store.getters.loading"/>
+        <b-alert v-model="$store.getters.erroLogin" variant="danger" dismissible>Erro ao efeturar login</b-alert>
         <b-row>
             <b-col class="text-center">
                 <img id="image-login" v-bind:src="imageLogin">
@@ -47,60 +44,22 @@
     
     import Loading from '../../components/Loading';
 
-    import { mapState } from 'vuex';
-    import { mapActions } from 'vuex';
-
     export default {
-        /*computed: mapState({
-            login: state => state.count
-        }),*/
-        components: {Loading},
+        components: { Loading },
         data() {
             return {
                 imageLogin,
                 usuario: {
                     email: "",
                     senha: "",
-                },
-                loading: false,
-                loginSuccess: false,
-                loginError: false,
-                usuarioLogado: ''
+                }
             }
         },
-        methods:  mapActions([
-            'login'
-        ])
-        
-           /* async logar() {
-                this.loading = true;
-
-                await client.post('/signin', this.usuario)
-                    .then(({ data }) => {
-                        console.log(data);
-                        this.$cookies.set('usuario', data, {expires: '30s'});
-                        this.$parent.updateUsuarioLogado();
-                        this.loginError = false;
-                        this.loginSuccess = true;
-
-                        this.redirectToIndex();
-                    })
-                    .catch(err => {
-                        this.loginSuccess = false;
-                        this.loginError = true;
-                        console.log("Erro no login: " +err.response);
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
-            },
-
-            redirectToIndex(){
-                setTimeout(() => {
-                    this.$router.push('/');
-                }, 2000);
+        methods: {
+            login() {
+                this.$store.dispatch('login',this.usuario)
             }
-        }*/
+        }
     }
 </script>
 

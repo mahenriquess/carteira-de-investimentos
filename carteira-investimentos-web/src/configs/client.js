@@ -1,6 +1,15 @@
 import axios from 'axios';
 import configs from './constants';
+import VueCookies from 'vue-cookies';
 
-export default axios.create({
+const client = axios.create({
     baseURL: configs.api
 });
+
+const usuario = VueCookies('usuario');
+
+if(usuario){
+    client.defaults.headers.common['Authorization'] = `bearer ${usuario.token}`;
+}
+
+export default client;

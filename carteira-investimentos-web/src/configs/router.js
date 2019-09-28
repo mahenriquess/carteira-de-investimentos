@@ -4,7 +4,7 @@ import Cadastro from '../screens/usuario/Cadastro'
 import Login from '../screens/usuario/Login'
 import Index from '../screens/Index';
 
-import usuarioHelper from '../helpers/usuarioHelper';
+import VueCookies from 'vue-cookies';
 
 Vue.use(Router);
 
@@ -12,6 +12,8 @@ const routesDontNeedLogin = [
     '/login',
     '/cadastro'
 ];
+
+const routeNeedLogin = routePath => routesDontNeedLogin.indexOf(routePath) < 0;
 
 const router = new Router({
     mode: 'history',
@@ -30,9 +32,11 @@ const router = new Router({
 });
 
 router.beforeEach((to,_,next) => {
-    if(!usuarioHelper.isLogged() && routesDontNeedLogin.indexOf(to.path) < 0)
+    console.log(to);
+    const isLogged = VueCookies.get('usuario') != null;
+    if(!isLogged && routeNeedLogin(to.path))
         next('/login');
-    else if(usuarioHelper.isLogged() && routesDontNeedLogin.indexOf(to.path) > -1)
+    else if(isLogged && !routeNeedLogin(to.path))
         next('/');
     else
         next();

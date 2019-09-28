@@ -3,14 +3,14 @@
         <b-navbar type="dark" variant="dark">
             <b-navbar-nav>
             <b-nav-item @click="router('/')">Home</b-nav-item>
-            <b-nav-item v-if="!userIsLogged" @click="router('/cadastro')">Cadastro</b-nav-item>
+            <b-nav-item v-if="!usuarioIsLogged" @click="router('/cadastro')">Cadastro</b-nav-item>
             
             <!-- <b-nav-item-dropdown v-if="!userIsLogged" text="User" right>
                 <b-dropdown-item href="#">Account</b-dropdown-item>
                 <b-dropdown-item href="#">Settings</b-dropdown-item>
             </b-nav-item-dropdown> -->
 
-            <b-nav-item-dropdown v-if="$store.state.usuario.isLogged" :text="$store.state.usuario.nome" right>
+            <b-nav-item-dropdown v-if="usuarioIsLogged" :text="$store.getters.usuario.nome" right>
                 <b-dropdown-item @click="deslogar">Deslogar</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
@@ -22,14 +22,11 @@
 export default {
     name: 'Navbar',
     props: [
-        'nomeUsuarioLogado',
-        'userIsLogged',
+        'usuarioIsLogged'
     ],
     methods: {
         deslogar() {
-            this.$cookies.remove('usuario');
-            this.$parent.updateUsuarioLogado();
-            this.$router.push('/login');
+            this.$store.dispatch('logout');
         },
         router(route) {
             console.log(route);
