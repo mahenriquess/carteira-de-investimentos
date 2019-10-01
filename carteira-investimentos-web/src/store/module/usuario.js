@@ -9,6 +9,7 @@ export default {
     state: {
         usuario: null,
         erroLogin:false,
+        statusCadastro: null,
     },
     mutations: {
         async loginSuccess (state,usuario){
@@ -19,6 +20,14 @@ export default {
 
         loginFailure(state) {
             state.erroLogin = true;
+        },
+
+        cadastroFailure (state) {
+            state.statusCadastro = false;
+        },
+
+        cadastroSuccess (state) {
+            state.statusCadastro = true;
         },
 
         async logout (state){
@@ -49,6 +58,21 @@ export default {
                         rootState.loading = false;
                     });
         },
+        cadastrarUsuario: async ({ commit, rootState }, usuario) => {
+            rootState.loading = true;
+            await client.post('/signup',usuario)
+                    .then(()=> {
+                        commit('cadastroSuccess');
+                        setTimeout(() => {
+                            router.push('login')
+                        },3000)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        commit('cadastroFailure');
+                    })
+                    .finally(() => rootState.loading = false);
+        },
         logout: async ({ commit }) => {
             await commit('logout');
             router.push('/login');
@@ -66,6 +90,16 @@ export default {
         },
         erroLogin(state) {
             return state.erroLogin
+        },
+        messageCadastro(state) {
+            if(state.statusCadastro === true){
+                return 'Cadastro efetuado com sucesso ! Você sera redirecionado.';
+            }else {
+                return 'Erro ao efetuar cadastro. Verifique os campos e tente novamente';
+            }
+        },
+        statusCadastro(state) {
+            return state.statusCadastro;
         }
     }
 }

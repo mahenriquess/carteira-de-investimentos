@@ -6,7 +6,7 @@ const client = axios.create({
     baseURL: configs.api
 });
 
-const usuario = VueCookies('usuario');
+const usuario = VueCookies.get('usuario');
 
 if(usuario){
     client.defaults.headers.common['Authorization'] = `bearer ${usuario.token}`;

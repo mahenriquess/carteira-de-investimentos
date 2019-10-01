@@ -1,7 +1,9 @@
 <template>
 	<div>
+		
 		<Navbar :usuarioIsLogged="usuarioIsLogged"/>
 		<b-container id="app">
+			
 			<router-view></router-view>
 		</b-container>
 	</div>
@@ -10,11 +12,16 @@
 <script>
 
 import Navbar from './components/Navbar';
+import Loading from './components/Loading';
+
 import client from './configs/client';
 
 client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
 export default {
+	components: {
+		Loading
+	},
 	created() {
 		this.$store.dispatch('atualizaUsuarioLogado');
 	},
@@ -24,7 +31,6 @@ export default {
 		}
 		
 	},
-    components: { Navbar },
 	name: 'app',
     methods: {
 

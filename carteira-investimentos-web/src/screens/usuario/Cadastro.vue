@@ -1,6 +1,7 @@
 <template>
     <div>
-        <Loading v-bind:activate="loading"/>
+        <Loading v-bind:activate="$store.getters.loading"/>
+        <b-alert v-model="mostraAlertCadastro" :variant="classAlertCadastro" dismissible>{{ $store.getters.messageCadastro }}</b-alert>
         <b-row>
         </b-row>
         <b-form>
@@ -47,12 +48,6 @@
             <router-link to="/"><p>Ja tem uma conta ?</p></router-link>
         </center>
 
-        <b-button @click="goToLogin">Voltar</b-button>
-
-
-        <b-modal id="modalTeste" title="Status Cadastro" ok-only  @ok="callbackOkMessage">
-            <p class="my-4">{{statusCadastro}}</p>
-        </b-modal>
     </div>
 </template>
 
@@ -61,9 +56,7 @@
     import Loading from '../../components/Loading';
 
     export default {
-        components: {
-            Loading
-        },
+        components: { Loading },
         data() {
             return {
                 usuario: {
@@ -71,40 +64,25 @@
                     sobrenome: "",
                     email: "",
                     senha: ""
-                },
-                loading:false,
-                statusCadastro:'',
-                callbackOkMessage: () => {
                 }
             }
         },
+        computed: {
+            mostraAlertCadastro() {
+                console.log(this.$store.getters.statusCadastro);
+                return this.$store.getters.statusCadastro === true || this.$store.getters.statusCadastro === false;
+            },
+            classAlertCadastro() {
+               if(this.$store.getters.statusCadastro === true) {
+                   return 'success';
+               }else {
+                   return 'danger';
+               }
+            }
+        },
         methods: {
-            async cadastrar() {
-                this.loading = true;
-                await client.post('/signup',this.usuario)
-                    .then(()=> {
-                        this.statusCadastro = 'Cadastrado com sucesso';
-                        this.callbackOkMessage = this.goToLogin;
-                        
-                        this.$bvModal.show("modalTeste");
-                        
-                        console.log('Cadastro efeturado');
-                    })
-                    .catch(err => {
-                        this.callbackOkMessage = this.closeModal();
-                        this.statusCadastro = 'Erro no cadastro';
-                        this.$bvModal.show("modalTeste");
-                        console.log('Cadastro não efeturado: '+err.response);
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
-            },
-            goToLogin() {
-                this.$router.push('/');
-            },
-            closeModal() {
-                this.$bvModal.hide("modalTeste");
+            cadastrar() {
+                this.$store.dispatch('cadastrarUsuario',this.usuario)
             }
         }
     }
