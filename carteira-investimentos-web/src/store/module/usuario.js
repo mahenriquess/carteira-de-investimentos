@@ -93,7 +93,7 @@ export default {
         },
         messageCadastro(state) {
             if(state.statusCadastro === true){
-                return 'Cadastro efetuado com sucesso ! Você sera redirecionado.';
+                return 'Cadastro efetuado com sucesso ! Você sera redirecionado em alguns segundos.';
             }else {
                 return 'Erro ao efetuar cadastro. Verifique os campos e tente novamente';
             }
