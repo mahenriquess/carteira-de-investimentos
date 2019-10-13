@@ -1,57 +1,5 @@
 <template>
-    <div class="align-center">
-
-        <!-- <div class="wallpaper"></div> -->
-        <!-- <v-overlay :value="$store.getters.loading">
-            <v-progress-circular indeterminate size="100"></v-progress-circular>
-        </v-overlay> -->
-        <!-- <Loading v-bind:activate="$store.getters.loading"/> -->
-        <!-- <b-alert v-model="mostraAlertCadastro" :variant="classAlertCadastro" dismissible>{{ $store.getters.messageCadastro }}</b-alert>
-        <b-row>
-        </b-row>
-        <b-form>
-            <b-row class="items-space">
-                <b-col>
-                    <label>Nome</label>
-                    <b-input v-model="usuario.nome" type="text"></b-input>
-                </b-col>
-                <b-col>
-                    <label>Sobrenome</label>
-                    <b-input v-model="usuario.sobrenome" type="text"></b-input>
-                </b-col>
-            </b-row>
-            <b-row class="items-space">
-                <b-col>
-                    <label>Email</label>
-                    <b-input v-model="usuario.email" type="email"></b-input>
-                </b-col>
-            </b-row>
-            <b-row class="items-space">
-                <b-col>
-                    <label>Senha</label>
-                    <b-input v-model="usuario.senha" type="password"></b-input>
-                    <b-form-text >
-                        Sua senha deve ter entre 5 e 15 caracteres, contendo letras minisculas, maisculas e caracteres especiais
-                    </b-form-text>
-                </b-col>
-                <b-col>
-                    <label>Confirmação de senha</label>
-                    <b-input type="password" id="text-password"></b-input>
-                    <b-form-text >
-                        Este campo deve ser exatamente ao digitado no campo de senha
-                    </b-form-text>
-                </b-col>
-            </b-row>
-            <b-row class="items-space">
-                <b-col>
-                    <b-button block variant="primary" @click="cadastrar">Cadastrar</b-button>
-                </b-col>
-            </b-row>
-        </b-form> -->
-
-
-
-
+<div class="align-center">
 <v-row align="center" elevation justify="center">
 
     <v-col cols="12"  sm="5" md="5">
@@ -97,7 +45,7 @@
             <router-link to="/"><p>Ja tem uma conta ?</p></router-link>
         </center> -->
 
-    </div>
+</div>
 </template>
 
 <script>
