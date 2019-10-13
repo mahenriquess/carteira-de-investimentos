@@ -8,25 +8,14 @@ import router from '../../configs/router';
 export default {
     state: {
         usuario: null,
-        erroLogin:false,
-        statusCadastro: null,
     },
     mutations: {
-        async loginSuccess (state,usuario){
+        async signin (state,usuario){
             state.usuario = usuario;
-            state.erroLogin = false;
-            VueCookies.set('usuario', state.usuario, {expires: '30s'});            
+            await VueCookies.set('usuario', state.usuario, {expires: '30s'});            
         },
 
-        loginFailure(state) {
-            state.erroLogin = true;
-        },
-
-        cadastroFailure (state) {
-            state.statusCadastro = false;
-        },
-
-        cadastroSuccess (state) {
+        signup (state) {
             state.statusCadastro = true;
         },
 
@@ -42,36 +31,13 @@ export default {
         }
     },
     actions: {
-        login: async ({ commit, rootState }, usuario) => {
-            rootState.loading = true;
-            await client.post('/signin', usuario )
-                    .then(({ data }) => data)
-                    .then(usuario => {
-                        commit('loginSuccess',usuario);
-                        router.push('/');
-                    })
-                    .catch(err => {
-                        commit('loginFailure');
-                        console.log("Erro no login: " +err.response);
-                    })
-                    .finally(() => {
-                        rootState.loading = false;
-                    });
+        signin: async ({ commit }, usuario) => {
+            const response = await client.post('/signin', usuario );
+            commit('signin',response.data);
         },
-        cadastrarUsuario: async ({ commit, rootState }, usuario) => {
-            rootState.loading = true;
-            await client.post('/signup',usuario)
-                    .then(()=> {
-                        commit('cadastroSuccess');
-                        setTimeout(() => {
-                            router.push('login')
-                        },3000)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        commit('cadastroFailure');
-                    })
-                    .finally(() => rootState.loading = false);
+        signup: async ({ commit }, usuario) => {
+            const response = await client.post('/signup',usuario);
+            commit('signup',response.data);
         },
         logout: async ({ commit }) => {
             await commit('logout');
@@ -88,18 +54,5 @@ export default {
         usuario(state) {
             return state.usuario
         },
-        erroLogin(state) {
-            return state.erroLogin
-        },
-        messageCadastro(state) {
-            if(state.statusCadastro === true){
-                return 'Cadastro efetuado com sucesso ! Você sera redirecionado em alguns segundos.';
-            }else {
-                return 'Erro ao efetuar cadastro. Verifique os campos e tente novamente';
-            }
-        },
-        statusCadastro(state) {
-            return state.statusCadastro;
-        }
     }
 }

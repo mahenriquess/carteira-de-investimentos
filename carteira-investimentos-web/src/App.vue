@@ -1,12 +1,26 @@
 <template>
-	<div>
-		
+	<!-- <v-app>
 		<Navbar :usuarioIsLogged="usuarioIsLogged"/>
-		<b-container id="app">
+		<v-content>
+			<v-container>
+				<router-view></router-view>
+			</v-container>
+		</v-content>
+	</v-app> -->
+		
+		<!-- <b-container id="app">
 			
-			<router-view></router-view>
-		</b-container>
-	</div>
+		</b-container> -->
+	<v-app>
+		<div v-if="!usuarioIsLogged" class="wallpaper"></div>
+		<Navbar v-if="usuarioIsLogged" :usuarioIsLogged="usuarioIsLogged"/>
+		
+		<v-content v-bind:class="{'disabled':($store.getters.loading && usuarioIsLogged)}">
+			<v-container>
+				<router-view></router-view>
+			</v-container>
+		</v-content>
+	</v-app>
 </template>
 
 <script>
@@ -20,7 +34,8 @@ client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 
 export default {
 	components: {
-		Loading
+		Loading,
+		Navbar
 	},
 	created() {
 		this.$store.dispatch('atualizaUsuarioLogado');
@@ -39,11 +54,19 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 60px;
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
 }
+.wallpaper{
+	-webkit-filter: blur(5px);
+
+	position:absolute;
+	height: 100vh;
+	width: 100vw;
+	background-image: url('./assets/img/wallpaper_login.jpg');
+	background-size: cover;
+}
+
+
 </style>

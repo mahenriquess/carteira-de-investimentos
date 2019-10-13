@@ -5,9 +5,9 @@ import VueCookies from 'vue-cookies';
 import App from './App.vue'
 import router from './configs/router';
 
-import BootstrapVue from 'bootstrap-vue';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import BootstrapVue from 'bootstrap-vue';
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -15,11 +15,12 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import HighchartsVue from 'highcharts-vue'
 
 import store from './store/store';
+import vuetify from './plugins/vuetify';
 
 
 Vue.use(VueCookies);
 Vue.use(Loading);
-Vue.use(BootstrapVue);
+// Vue.use(BootstrapVue);
 Vue.use(HighchartsVue);
 
 Vue.config.productionTip = false
@@ -27,5 +28,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App),
+  vuetify,
+  render: h => h(App)
 }).$mount('#app')

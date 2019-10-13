@@ -12,6 +12,22 @@ export default new Vuex.Store({
     state: {
         loading:false
     },
+    mutations: {
+        initLoading(state) {
+            state.loading = true;
+        },
+        dismissLoading(state) {
+            state.loading = false;
+        }
+    },
+    actions: {
+        initLoading({ commit }) {
+            commit('initLoading');
+        },
+        dismissLoading({ commit }) {
+            commit('dismissLoading');
+        }
+    },
     getters: {
         loading(state){
             return state.loading;
