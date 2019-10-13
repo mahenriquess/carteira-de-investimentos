@@ -129,5 +129,5 @@
     .align-center{
         height: 80vh !important;
     }
-    .card{}
+
 </style>
