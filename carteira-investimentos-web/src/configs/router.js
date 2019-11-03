@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Cadastro from '../screens/usuario/Cadastro'
 import Login from '../screens/usuario/Login'
 import Index from '../screens/Index';
+import Carteiras from '../screens/Carteiras';
 
 import VueCookies from 'vue-cookies';
 
@@ -28,6 +29,10 @@ const router = new Router({
     {
         path: '/',
         component: Index
+    },
+    {
+        path: '/carteiras',
+        component: Carteiras
     }]
 });
 

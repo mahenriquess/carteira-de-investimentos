@@ -6,4 +6,9 @@ module.exports = app => {
     app.post('/signin', (req, res) => {
         app.api.controllers.usuario.signin(app, req, res);
     });
+
+    app.post('/store', (req, res) => {
+        console.log(req.body);
+        // app.api.controllers.usuario.store(req, res);
+    });
 }

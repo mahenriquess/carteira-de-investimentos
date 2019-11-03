@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-toolbar app>
+        <!-- <v-toolbar app>
             <v-toolbar-title class="headline text-uppercase mr-4">
                 <span class="font-weight-light">Carteira de Investimentos</span>
             </v-toolbar-title>
@@ -25,17 +25,21 @@
                     </v-list>
                 </v-menu>
             </v-toolbar-items>
-        </v-toolbar>
+        </v-toolbar> -->
+
+        <Drawer />
     </div>
    
 </template>
 
 <script>
 import Loading from './Loading';
+import Drawer from './Drawer';
 
 export default {
     components: {
 		Loading,
+		Drawer
 	},
     name: 'Navbar',
     props: [

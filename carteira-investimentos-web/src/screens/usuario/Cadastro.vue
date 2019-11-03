@@ -2,7 +2,7 @@
 <div class="align-center">
 <v-row align="center" elevation justify="center">
 
-    <v-col cols="12"  sm="5" md="5">
+    <v-col cols="12"  sm="6" md="6">
         <v-toolbar color="primary text-center" dark flat>
             <v-toolbar-title>Cadastrar Usuário</v-toolbar-title>
             <div class="flex-grow-1"></div>

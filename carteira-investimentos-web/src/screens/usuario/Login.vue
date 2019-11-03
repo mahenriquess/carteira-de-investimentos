@@ -3,7 +3,7 @@
     <div class="align-center">
         
         <v-row align="center" justify="center">
-            <v-col cols="12" sm="3" md="3">
+            <v-col cols="12" sm="5" md="5">
                 <v-toolbar color="primary text-center" dark flat>
                     <v-toolbar-title>Login</v-toolbar-title>
                     <div class="flex-grow-1"></div>
@@ -21,7 +21,6 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions v-bind:class="{'disabled':($store.getters.loading)}">
-                        <div class="flex-grow-1"></div>
                         <v-row>
                             <v-col sm="12">
                                 <v-btn color="primary" :disabled="!formIsValid" block @click="signin">Logar</v-btn>

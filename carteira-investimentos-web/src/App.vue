@@ -14,6 +14,7 @@
 	<v-app>
 		<div v-if="!usuarioIsLogged" class="wallpaper"></div>
 		<Navbar v-if="usuarioIsLogged" :usuarioIsLogged="usuarioIsLogged"/>
+		<!-- <Drawer /> -->
 		
 		<v-content v-bind:class="{'disabled':($store.getters.loading && usuarioIsLogged)}">
 			<v-container>
@@ -26,6 +27,7 @@
 <script>
 
 import Navbar from './components/Navbar';
+import Drawer from './components/Drawer';
 import Loading from './components/Loading';
 
 import client from './configs/client';
@@ -35,7 +37,8 @@ client.defaults.headers['Access-Control-Allow-Origin'] = '*';
 export default {
 	components: {
 		Loading,
-		Navbar
+		Navbar,
+		Drawer
 	},
 	created() {
 		this.$store.dispatch('atualizaUsuarioLogado');
