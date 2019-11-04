@@ -29,7 +29,7 @@ module.exports.signin = async (app, req, res) => {
     }
 
     const {email, senha} = req.body;
-
+    
     Usuario.findOne({where: {email}})
         .then(usuario => {
             if(!usuario) res.status(404).send();

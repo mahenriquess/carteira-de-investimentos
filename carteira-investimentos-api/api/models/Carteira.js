@@ -1,15 +1,13 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Usuario extends Model {
+class Carteira extends Model {
   	static init(sequelize) {
 		console.log("Registrando Modulo de Usuário");
 
 		super.init({
 			nome: DataTypes.STRING,
-			sobrenome: DataTypes.STRING,
-			email: DataTypes.STRING,
-			senha: DataTypes.STRING,
-			status: DataTypes.STRING
+			id_usuario: DataTypes.INTEGER,
+			valor: DataTypes.DECIMAL(14, 2),
 		}, {
 			sequelize
 		})
@@ -18,7 +16,7 @@ class Usuario extends Model {
 	static associate(models) {
 		// Associações
 		// Ex: this.myAssociation = this.belongsTo(models.OtherModel);
-		this.carteiras = this.belongsToMany(models.Carteira)
+		// this.carteiras = this.belongsToMany(models.Carteira)
 	}
 }
 
