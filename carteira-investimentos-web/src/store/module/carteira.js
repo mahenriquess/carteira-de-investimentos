@@ -20,6 +20,10 @@ export default {
                     return carteira;
                 }
             });
+        },
+
+        deleteCarteira(state, carteiraDeleted) {
+            state.carteira = state.carteira.filter(carteira => carteira.id != carteiraDeleted.id);
         }
     },
     actions: {
@@ -34,11 +38,32 @@ export default {
 
             commit('loadFinishCarteira',carteira);
 
+        },
+
+        deleteCarteira: async({commit}, carteira) => {
+            const { id } = carteira;
+
+            console.warn(carteira);
+            try{
+                const response = await client.delete('/carteira/'+id);
+                console.log(response);
+                commit("deleteCarteira",carteira);
+
+            }catch(e) {
+
+            }
+            
+
         }
     },
     getters: {
         carteiras(state) {
             return state.carteiras;
+        },
+
+        carteiraIsLoading(state) {
+            const carteiraLoading = state.carteiras.filter(carteira => carteira.loading);
+            return carteiraLoading != null && carteiraLoading.length > 0;
         }
     }
 }

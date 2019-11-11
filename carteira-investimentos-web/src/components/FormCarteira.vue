@@ -11,7 +11,6 @@
           
         </v-row>
       </v-container>
-      <small>*indicates required field</small>
     </v-card-text>
       
 </template>
@@ -29,7 +28,30 @@ export default {
   methods: {
     getDataForm() {
       return this.carteira;
+    },
+
+    getErrors() {
+      const errors = [];
+
+      console.log(this.carteira.nome.length);
+      if(this.carteira.nome.length <= 5){
+        errors.push('A carteira deve conter mais de 5 caracteres')
+      }
+
+      if(this.carteira.valor < 300){
+        errors.push('O valor minimo a ser registrado deve ser 300 reais')
+      }
+
+      return {errors, hasError: errors.length > 0};
+    },
+
+    clearFields() {
+      this.carteira = {
+        nome: '',
+        valor: 0
+      }
     }
+
   }
 }
 </script>

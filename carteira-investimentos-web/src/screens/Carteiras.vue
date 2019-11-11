@@ -13,19 +13,22 @@
             </template> 
             
         </v-row>
-        <v-btn
-            color="pink"
-            fab
-            dark
-            large
-            absolute
-            bottom
-            right
-            class="v-btn--example"
-            @click="formCarteira"
-            >
-            <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <v-fab-transition>
+            <v-btn
+                color="pink"
+                v-show="!$store.getters.carteiraIsLoading"
+                fab
+                dark
+                large
+                absolute
+                bottom
+                right
+                class="v-btn--example"
+                @click="formCarteira"
+                >
+                <v-icon>mdi-plus</v-icon>
+            </v-btn>
+        </v-fab-transition>
         <v-dialog v-model="dialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
@@ -35,7 +38,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="dialog = false">Cancelar</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveCarteira">Salvar</v-btn>
+                    <v-btn color="blue darken-1" :disabled="!dialog" text @click="saveCarteira">Salvar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -63,18 +66,29 @@ export default {
             this.dialog=true;
         },
         async saveCarteira() {
-            this.dialog=false;
 
-            const {nome, valor} = this.$refs.formCarteira.getDataForm();
+            const {errors, hasError} = this.$refs.formCarteira.getErrors();
+            if(hasError){
+                console.log(errors);
+                let msg = "";
+                errors.forEach(error => msg += error);
+                alert(msg);
+                return;
+            }
+
             
-                
-                try {
-                    await this.$store.dispatch('addCarteira',{nome, valor});
-                    
-                }catch(e) {
-                    console.warn(e);
-                }
+            
+            const {nome, valor} = this.$refs.formCarteira.getDataForm();
 
+            this.dialog=false;
+            this.$refs.formCarteira.clearFields();
+            try {
+                
+                await this.$store.dispatch('addCarteira',{nome, valor});
+                
+            }catch(e) {
+                console.warn(e);
+            }
         }
     }
 }

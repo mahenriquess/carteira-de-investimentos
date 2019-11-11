@@ -13,4 +13,8 @@ module.exports = app => {
         app.api.controllers.carteira.store(app, req, res);
     });
 
+    app.delete(`${prefix}/:id`, (req, res) => {
+        app.api.controllers.carteira.destroy(app, req, res);
+    });
+
 }

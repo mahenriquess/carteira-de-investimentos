@@ -19,10 +19,35 @@ module.exports = {
             id_usuario: req.user.id
         });
 
+        console.log(carteiraSaved);
+
         if(carteiraSaved)
             return res.status(201).send(carteiraSaved)
         else
             return res.status(500).send('Erro ao salvar carteira');
         
+    },
+
+    destroy: async  (app ,req, res) => {
+        const { id } = req.query;
+
+        if(!id) res.status(400).send('Necessario ID para deleção');
+        Carteira.destroy({
+            where: {
+                id,
+                id_usuario: req.user.id
+            }
+        }).then(rowsDeleted => {
+            console.log(rowsDeleted);
+            if(rowsDeleted > 0)
+                res.status(202).send('Deletado com sucesso');
+            else
+                res.status(403).send();
+        }).catch(e => {
+            res.status(500).send(e);
+        });
+        
+
+       
     }
 }
