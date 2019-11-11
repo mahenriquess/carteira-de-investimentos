@@ -33,8 +33,9 @@
   <StatsCard
           color="green"
           icon="fa-dollar-sign"
-          :title="carteira.title"
-          :value="preco"
+          :title="carteira.nome"
+          :value="valor"
+          :loading="carteira.loading"
           sub-icon="mdi-calendar"
         />
 </template>
@@ -45,8 +46,8 @@ import StatsCard from './StatsCard';
 export default {
     components: {StatsCard},
     computed: {
-      preco(){
-        return `R$ ${this.carteira.preco}`
+      valor() {
+        return `R$ ${this.carteira.valor}`
       }
     },
     props:[

@@ -38,6 +38,8 @@ module.exports.signin = async (app, req, res) => {
                 if(err || !isMatch){
                     return res.status(401).send();
                 }
+
+                console.log(usuario.carteiras);
     
                 const payload = {id: usuario.id};
                 res.json({

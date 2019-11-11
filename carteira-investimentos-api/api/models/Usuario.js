@@ -18,7 +18,7 @@ class Usuario extends Model {
 	static associate(models) {
 		// Associações
 		// Ex: this.myAssociation = this.belongsTo(models.OtherModel);
-		this.carteiras = this.belongsToMany(models.Carteira)
+		this.carteiras = this.hasMany(models.Carteira,{ as: 'id', foreignKey: 'id_usuario' });
 	}
 }
 

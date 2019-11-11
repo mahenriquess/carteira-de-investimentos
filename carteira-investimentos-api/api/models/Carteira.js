@@ -20,4 +20,4 @@ class Carteira extends Model {
 	}
 }
 
-module.exports = Usuario;
+module.exports = Carteira;
