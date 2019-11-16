@@ -78,7 +78,7 @@
         v-text="subText"
       />
     </div> -->
-  </Card>
+  
 </template>
 
 <script>
@@ -97,7 +97,6 @@ export default {
     methods: {
       async deletar() {
         try {
-            
             await this.$store.dispatch('deleteCarteira',this.carteira);
             
         }catch(e) {

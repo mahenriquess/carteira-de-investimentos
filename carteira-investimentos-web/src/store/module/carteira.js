@@ -23,7 +23,7 @@ export default {
         },
 
         deleteCarteira(state, carteiraDeleted) {
-            state.carteira = state.carteira.filter(carteira => carteira.id != carteiraDeleted.id);
+            state.carteiras = state.carteiras.filter(carteira => carteira.id != carteiraDeleted.id);
         }
     },
     actions: {
@@ -42,17 +42,15 @@ export default {
 
         deleteCarteira: async({commit}, carteira) => {
             const { id } = carteira;
-
-            console.warn(carteira);
+            //console.warn(carteira);
             try{
-                const response = await client.delete('/carteira/'+id);
-                console.log(response);
+                const response = await client.delete('/carteira/'+ id);
+                console.log(response.data);
                 commit("deleteCarteira",carteira);
 
             }catch(e) {
-
+                console.log("Erro ao tentar excluir carteira. " + e);
             }
-            
 
         }
     },
