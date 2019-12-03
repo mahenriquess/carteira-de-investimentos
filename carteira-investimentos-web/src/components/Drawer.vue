@@ -68,7 +68,7 @@ export default {
       {
         to: '/carteiras',
         icon: 'fa-wallet',
-        text: 'User Profile'
+        text: 'Carteiras'
       }
     ]
     }
