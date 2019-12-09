@@ -1,4 +1,5 @@
 module.exports = {
     authSecret: '',
-    serverPort: 3000
+    serverPort: 3000,
+    hdbrasilKey: '63d21978'
 }

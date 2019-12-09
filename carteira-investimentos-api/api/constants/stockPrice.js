@@ -1,0 +1,1 @@
+module.exports = "https://api.hgbrasil.com/finance/stock_price";
