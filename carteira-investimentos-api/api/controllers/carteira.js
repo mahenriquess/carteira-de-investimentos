@@ -1,6 +1,15 @@
 const Carteira = require('../models/Carteira');
 
+const association = {
+    include: { association: 'usuario' }
+}
 module.exports = {
+
+    getAll: async (app, req, res) => {
+        const carteiras = await Carteira.findAll(association);
+
+        return res.send(carteiras);
+    },
     get: async (app, req, res) => {
         const carteiras = await Carteira.findAll({
             where: {id_usuario: req.user.id}
@@ -26,6 +35,13 @@ module.exports = {
         else
             return res.status(500).send('Erro ao salvar carteira');
         
+    },
+
+    clearTable: async (app, req, res) => {
+        await Carteira.destroy({
+            where: {},
+            truncate: true
+        });
     },
 
     destroy: async (app ,req, res) => {

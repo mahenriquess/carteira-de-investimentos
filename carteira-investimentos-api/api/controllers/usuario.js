@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jwt-simple');
 const { authSecret } = require('../../.env');
 
+const association = {
+    include: { association: 'carteiras' }
+}
+
 module.exports = {
     async store(req, res) {
         
@@ -30,23 +34,34 @@ module.exports.signin = async (app, req, res) => {
 
     const {email, senha} = req.body;
     
-    Usuario.findOne({where: {email}})
+    Usuario.findOne({where: {email}}, association)
         .then(usuario => {
             if(!usuario) res.status(404).send();
 
-            bcrypt.compare(senha, usuario.senha, (err, isMatch) => {
+            bcrypt.compare(senha, usuario.senha, async (err, isMatch) => {
                 if(err || !isMatch){
                     return res.status(401).send();
                 }
-
-                console.log(usuario.carteiras);
     
-                const payload = {id: usuario.id};
-                res.json({
-                    nome: usuario.nome,
-                    email: usuario.email,
-                    token: jwt.encode(payload, authSecret)
-                });
+                try{
+                    const user = await Usuario.findByPk(usuario.id,association);
+                    const payload = {id: user.id};
+
+                    res.json({
+                        nome: user.nome,
+                        email: user.email,
+                        carteiras: user.carteiras,
+                        token: jwt.encode(payload, authSecret)
+                    });
+
+                    
+                }catch(err) {
+
+                }
+                
+
+
+                
             });
         })
         .catch(err => res.status(500).send());

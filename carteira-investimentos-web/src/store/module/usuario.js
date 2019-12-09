@@ -33,6 +33,10 @@ export default {
     actions: {
         signin: async ({ commit }, usuario) => {
             const response = await client.post('/signin', usuario );
+            if(response.data && response.data.carteiras){
+                commit('setCarteiras',response.data.carteiras, { root: true });
+            }
+
             commit('signin',response.data);
         },
         signup: async ({ commit }, usuario) => {
