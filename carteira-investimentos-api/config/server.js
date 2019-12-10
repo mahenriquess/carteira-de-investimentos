@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const consign = require('consign');
 const cors = require('cors');
 
+require('../db/index');
 
 app.use(bodyParser.json());
 app.use(cors({
