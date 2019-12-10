@@ -6,14 +6,14 @@ module.exports = {
     get: async (app, req, res) => {
 
         try {
-            const data = await stockPriceHelper.getData("bidi4");
+            const data = await stockPriceHelper.getData(req.params.symbol); 
             const hist = {...data};
 
             const history = new History({
                 _id: mongoose.Types.ObjectId(),
                 simbolo: hist.simbolo,
                 nome: hist.nome,
-                regiao: hist.nome,
+                regiao: hist.regiao,
                 moeda: hist.moeda,
                 preco: hist.preco
             });
