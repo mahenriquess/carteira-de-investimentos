@@ -3,13 +3,15 @@ import Vuex from 'vuex';
 
 import usuario from './module/usuario';
 import carteira from './module/carteira';
+import ativo from './module/ativo';
+
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         usuario,
-        carteira
+        carteira,
     },
     state: {
         loading:false

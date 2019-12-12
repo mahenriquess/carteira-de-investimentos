@@ -14,6 +14,7 @@ export default {
             state.usuario = usuario;
             await VueCookies.set('usuario', state.usuario, {expires: '30s'});            
         },
+        
 
         signup (state) {
             state.statusCadastro = true;
@@ -24,10 +25,14 @@ export default {
             VueCookies.remove('usuario');            
         },
 
-        async atualizaUsuarioLogado(state) {
+        async atualizaUsuarioLogado(state, populaCarteiras) {
             const usuarioLogado = VueCookies.get('usuario');
-            if(usuarioLogado)
+                
+            console.log(usuarioLogado);
+            if(usuarioLogado){
+                populaCarteiras(usuarioLogado.carteiras);
                 state.usuario = usuarioLogado;
+            }
         }
     },
     actions: {
@@ -48,8 +53,10 @@ export default {
             router.push('/login');
         },
         atualizaUsuarioLogado: ({ commit }) => {
-            commit('atualizaUsuarioLogado');
-        }
+            commit('atualizaUsuarioLogado', carteiras => {
+                if(carteiras) commit('setCarteiras',carteiras, { root: true });
+            });
+        },
     },
     getters: {
         usuarioIsLogged(state) {

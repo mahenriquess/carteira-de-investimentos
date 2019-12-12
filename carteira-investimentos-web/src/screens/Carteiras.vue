@@ -1,5 +1,6 @@
 <template>
     <div>
+        <v-progress-linear :active="loadingCarteiras" indeterminate absolute color="light-purple lighten-1"></v-progress-linear> 
         <v-row justify="center">
             <template v-for="(carteira, index) in $store.getters.carteiras">
                 <v-col :key="carteira.id">
@@ -13,6 +14,8 @@
             </template> 
             
         </v-row>
+                
+
         <v-fab-transition>
             <v-btn
                 color="pink"
@@ -52,13 +55,23 @@ import FormCarteira from './../components/FormCarteira';
 
 export default {
     components:{Carteira,FormCarteira},
+    async created() {
+        try{
+            this.$store.dispatch('loadCarteiras');
+        }catch(err){
+            console.log(err);
+        }finally {
+            this.loadingCarteiras = false;
+        }
+    },
     data() {
         return {
             carteiras: [
                 {id: 1 ,title: 'Carteira 1', preco:105.30},
                 {id: 2, title: 'Carteira 2', preco:2000.75},
             ],
-            dialog:false
+            dialog:false,
+            loadingCarteiras: true
         }
     },
     methods: {

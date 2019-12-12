@@ -4,7 +4,9 @@ const jwt = require('jwt-simple');
 const { authSecret } = require('../../.env');
 
 const association = {
-    include: { association: 'carteiras' }
+    include: [
+        {all: true, nested: true }
+    ]
 }
 
 module.exports = {
@@ -56,7 +58,7 @@ module.exports.signin = async (app, req, res) => {
 
                     
                 }catch(err) {
-
+                    res.status(500).json(err);
                 }
                 
 

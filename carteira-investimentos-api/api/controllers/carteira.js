@@ -1,19 +1,30 @@
 const Carteira = require('../models/Carteira');
 
 const association = {
-    include: { association: 'usuario' }
+    include: [
+        {association: 'usuario'},
+        {association: 'ativos'}
+    ]
 }
 module.exports = {
 
     getAll: async (app, req, res) => {
-        const carteiras = await Carteira.findAll(association);
+        try{
+            const carteiras = await Carteira.findAll(association);
+            
+            return res.send(carteiras);
+        }catch(err){
+            return res.status(500).send(err);
+        }
 
-        return res.send(carteiras);
     },
     get: async (app, req, res) => {
         const carteiras = await Carteira.findAll({
-            where: {id_usuario: req.user.id}
+            where: {id_usuario: req.user.id},
+            ...association
         });
+
+        console.log(carteiras);
 
         return res.send(carteiras);
     },
@@ -62,5 +73,27 @@ module.exports = {
         }).catch(e => {
             return res.status(500).send(e);
         });
+    },
+
+    addAtivo: async (app, req, res) => {
+        const { idCarteira, ativo } = req.body;
+        if(!idCarteira){
+            return res.status(400).send({message: "Necessário informar carteira que deve ser adicionado o ativo"});
+        }
+
+        const carteira = await Carteira.findByPk(idCarteira);
+
+        if(!carteira){
+            return res.status(401).send({message: "Carteira não encontrada"});
+        }
+
+        const ativoCreated = await carteira.addAtivo(ativo);
+
+        if(ativoCreated){
+            return res.send({message: `Ativo adicioando com sucesso à carteira ${carteira.nome}`});
+        }
+
+        return res.status(500).send({message: "Erro ao salvar ativo"});
+
     }
 }

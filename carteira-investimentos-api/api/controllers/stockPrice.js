@@ -3,8 +3,7 @@ const mongoose = require('../../config/database-nosql');
 const History = require('../../collections/history');
 
 module.exports = {
-    get: async (app, req, res) => {
-
+    getAndSaveStockPrice: async (app, req, res) => {
         try {
             const data = await stockPriceHelper.getData(req.params.symbol); 
             const hist = {...data};
@@ -31,6 +30,19 @@ module.exports = {
         } catch(err) {
             console.log(err);
             res.status(500).send();
+        }
+    },
+
+    get: async (app, req, res) => {
+        const {simbolo} = req.params;
+        if(!simbolo){
+            res.status(400).send({message: "Necessário simbolo"});
+        }
+        try{
+            const data = await History.findOne({simbolo}).sort({'updated_at': -1});
+            res.json(data);
+        }catch(err){
+            res.status(500).send({message: "Erro ao buscar ultimo histórico da empresa "+simbolo});
         }
     }
 }

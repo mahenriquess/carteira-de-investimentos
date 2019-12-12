@@ -24,6 +24,10 @@ export default {
 
         deleteCarteira(state, carteiraDeleted) {
             state.carteiras = state.carteiras.filter(carteira => carteira.id != carteiraDeleted.id);
+        },
+
+        popularCarteiras(state, carteiras) {
+            state.carteiras = carteiras;
         }
     },
     actions: {
@@ -52,7 +56,31 @@ export default {
                 console.log("Erro ao tentar excluir carteira. " + e);
             }
 
-        }
+        },
+        loadCarteiras: async({commit}) => {
+            const { data } = await client.get('/carteira');
+            console.log(data);
+            if(data){
+                data.map(carteira => {
+                    const valorDisponivel = carteira.ativos.forEach(ativo => {
+                        carteira.valor = carteira.valor - ativo.valorCompra;
+                    });
+                    return { 
+                        ...carteira,
+                        valor: valorDisponivel
+                    }
+                });
+                commit('popularCarteiras',data)
+            }
+        },
+        addAtivo: async({commit}, {idCarteira, ativo}) => {
+            const result = await client.post('/carteira/ativo',{
+                idCarteira,
+                ativo
+            });
+
+            console.log(result);
+        },
     },
     getters: {
         carteiras(state) {

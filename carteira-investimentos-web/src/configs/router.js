@@ -4,6 +4,7 @@ import Cadastro from '../screens/usuario/Cadastro'
 import Login from '../screens/usuario/Login'
 import Index from '../screens/Index';
 import Carteiras from '../screens/Carteiras';
+import CarteiraDetalhe from '../screens/carteira/Detalhe';
 
 import VueCookies from 'vue-cookies';
 
@@ -18,22 +19,28 @@ const routeNeedLogin = routePath => routesDontNeedLogin.indexOf(routePath) < 0;
 
 const router = new Router({
     mode: 'history',
-    routes: [{
-        path: '/login',
-        component: Login
-    },
-    {
-        path: '/cadastro',
-        component: Cadastro
-    },
-    {
-        path: '/',
-        component: Index
-    },
-    {
-        path: '/carteiras',
-        component: Carteiras
-    }]
+    routes: [
+        {
+            path: '/login',
+            component: Login
+        },
+        {
+            path: '/cadastro',
+            component: Cadastro
+        },
+        {
+            path: '/',
+            component: Index
+        },
+        {
+            path: '/carteiras',
+            component: Carteiras
+        },
+        {
+            path: '/carteira-detalhe/:carteiraId',
+            component: CarteiraDetalhe
+        },
+    ]
 });
 
 router.beforeEach((to,_,next) => {
