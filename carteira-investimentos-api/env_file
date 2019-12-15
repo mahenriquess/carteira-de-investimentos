@@ -1,5 +1,6 @@
 module.exports = {
     authSecret: '',
     serverPort: 3000,
-    hdbrasilKey: '63d21978'
+    hdbrasilKey: '63d21978',
+    MONGO_DB: ''
 }
