@@ -1,25 +1,15 @@
 <template>
-	<!-- <v-app>
-		<Navbar :usuarioIsLogged="usuarioIsLogged"/>
-		<v-content>
-			<v-container>
-				<router-view></router-view>
-			</v-container>
-		</v-content>
-	</v-app> -->
-		
-		<!-- <b-container id="app">
-			
-		</b-container> -->
 	<v-app>
 		<div v-if="!usuarioIsLogged" class="wallpaper"></div>
 		<Navbar v-if="usuarioIsLogged" :usuarioIsLogged="usuarioIsLogged"/>
-		<!-- <Drawer /> -->
 		
 		<v-content v-bind:class="{'disabled':($store.getters.loading && usuarioIsLogged)}">
-			<v-container>
-				<router-view></router-view>
-			</v-container>
+  				<transition 
+				  	name="fade" mode="out-in">
+
+					<router-view></router-view>
+				</transition>
+
 		</v-content>
 	</v-app>
 </template>
@@ -30,10 +20,6 @@ import Navbar from './components/Navbar';
 import Drawer from './components/Drawer';
 import Loading from './components/Loading';
 
-import client from './configs/client';
-
-client.defaults.headers['Access-Control-Allow-Origin'] = '*';
-
 export default {
 	components: {
 		Loading,
@@ -42,12 +28,18 @@ export default {
 	},
 	created() {
 		this.$store.dispatch('atualizaUsuarioLogado');
+		if(this.usuarioIsLogged) {
+			setTimeout(() => {
+				console.log('loadCarteiras')
+				this.$store.dispatch('loadCarteiras');
+			},500)
+		}
+		
 	},
 	computed:{
 		usuarioIsLogged() {
 			return this.$store.getters.usuarioIsLogged;
 		}
-		
 	},
 	name: 'app',
     methods: {
@@ -70,6 +62,11 @@ export default {
 	background-image: url('./assets/img/wallpaper_login.jpg');
 	background-size: cover;
 }
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 </style>

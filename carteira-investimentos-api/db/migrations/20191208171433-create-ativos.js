@@ -21,6 +21,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(14, 2)
       },
+      valor_moeda_compra: {
+        type: Sequelize.DECIMAL(14, 2),
+      },
+      valor_moeda_ultima_atualizacao: {
+        type: Sequelize.DECIMAL(14, 2),
+      },
+      tipo_moeda: {
+        type: Sequelize.STRING,
+      },
+      qtd_acoes: {
+        type: Sequelize.INTEGER
+      },
       id_carteira: {
         type: Sequelize.INTEGER,
         references: {

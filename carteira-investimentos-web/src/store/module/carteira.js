@@ -27,20 +27,49 @@ export default {
         },
 
         popularCarteiras(state, carteiras) {
+            console.log("Populando Carteira ");
             state.carteiras = carteiras;
-        }
+        },
+
+        atualizarCarteira(state, carteiraUpdated) {
+            state.carteiras = state.carteiras.map(carteira => {
+                if(carteira.id == carteiraUpdated.id){
+                    return carteiraUpdated;
+                }else{
+                    return carteira;
+                }
+            });
+        },
+
+        addAtivo(state, {data, idCarteira}) {
+            state.carteiras = state.carteiras.map(carteira => {
+                if(carteira.id == idCarteira){
+                    data.idCarteira = carteira.id;
+                    carteira.ativos.push(data);
+                    carteira.valor -= data.valorCompra
+                }
+                return carteira;
+            })
+        },
+        venderAtivo(state, ativoDeleted) {
+            state.carteiras = state.carteiras.map(carteira => {
+                carteira.ativos = carteira.ativos.filter(ativo => ativo.id != ativoDeleted.id);
+                if(carteira.id == ativoDeleted.idCarteira){
+                    const newValorCarteira = parseFloat(carteira.valor) + parseFloat(ativoDeleted.valorCompra);
+                    carteira.valor = newValorCarteira;
+                }
+                return carteira;
+            })
+        },
     },
     actions: {
         addCarteira: async({commit}, carteira) => {
             carteira.loading = true;
             commit('addCarteira',carteira);
 
-            const response = await client.post('/carteira', carteira);
+            const {data} = await client.post('/carteira', carteira);
 
-            carteira.loading = false;
-            carteira.id = response.data.id;
-
-            commit('loadFinishCarteira',carteira);
+            await commit('loadFinishCarteira',data);
 
         },
 
@@ -55,31 +84,24 @@ export default {
             }catch(e) {
                 console.log("Erro ao tentar excluir carteira. " + e);
             }
-
         },
         loadCarteiras: async({commit}) => {
             const { data } = await client.get('/carteira');
-            console.log(data);
             if(data){
-                data.map(carteira => {
-                    const valorDisponivel = carteira.ativos.forEach(ativo => {
-                        carteira.valor = carteira.valor - ativo.valorCompra;
-                    });
-                    return { 
-                        ...carteira,
-                        valor: valorDisponivel
-                    }
-                });
-                commit('popularCarteiras',data)
+                await commit('popularCarteiras',data)
             }
         },
         addAtivo: async({commit}, {idCarteira, ativo}) => {
-            const result = await client.post('/carteira/ativo',{
+            const { data } = await client.post('/carteira/ativo', {
                 idCarteira,
                 ativo
             });
-
-            console.log(result);
+            console.log(data,idCarteira);
+            await commit('addAtivo',{data,idCarteira})
+        },
+        venderAtivo: async({commit}, ativo) => {
+            const { data } = await client.delete(`/carteira/ativo/${ativo.id}`);
+            await commit('venderAtivo',data);
         },
     },
     getters: {

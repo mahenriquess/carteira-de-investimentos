@@ -9,6 +9,5 @@ module.exports = app => {
 
     app.post('/store', (req, res) => {
         console.log(req.body);
-        // app.api.controllers.usuario.store(req, res);
     });
 }

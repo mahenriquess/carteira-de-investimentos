@@ -10,9 +10,10 @@ export default {
         usuario: null,
     },
     mutations: {
-        async signin (state,usuario){
+        signin (state,usuario){
             state.usuario = usuario;
-            await VueCookies.set('usuario', state.usuario, {expires: '30s'});            
+            VueCookies.set('usuario', state.usuario, {expires: '30s'});        
+            client.defaults.headers.common['Authorization'] = `bearer ${usuario.token}`;    
         },
         
 
@@ -25,12 +26,12 @@ export default {
             VueCookies.remove('usuario');            
         },
 
-        async atualizaUsuarioLogado(state, populaCarteiras) {
+        async atualizaUsuarioLogado(state) {
             const usuarioLogado = VueCookies.get('usuario');
                 
             console.log(usuarioLogado);
             if(usuarioLogado){
-                populaCarteiras(usuarioLogado.carteiras);
+                // populaCarteiras(usuarioLogado.carteiras);
                 state.usuario = usuarioLogado;
             }
         }
@@ -38,10 +39,6 @@ export default {
     actions: {
         signin: async ({ commit }, usuario) => {
             const response = await client.post('/signin', usuario );
-            if(response.data && response.data.carteiras){
-                commit('setCarteiras',response.data.carteiras, { root: true });
-            }
-
             commit('signin',response.data);
         },
         signup: async ({ commit }, usuario) => {
@@ -50,12 +47,11 @@ export default {
         },
         logout: async ({ commit }) => {
             await commit('logout');
+            await commit('setCarteiras',[], {root:true});
             router.push('/login');
         },
         atualizaUsuarioLogado: ({ commit }) => {
-            commit('atualizaUsuarioLogado', carteiras => {
-                if(carteiras) commit('setCarteiras',carteiras, { root: true });
-            });
+            commit('atualizaUsuarioLogado');
         },
     },
     getters: {

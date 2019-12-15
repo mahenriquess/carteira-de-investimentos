@@ -29,10 +29,6 @@ const router = new Router({
             component: Cadastro
         },
         {
-            path: '/',
-            component: Index
-        },
-        {
             path: '/carteiras',
             component: Carteiras
         },
@@ -49,9 +45,14 @@ router.beforeEach((to,_,next) => {
     if(!isLogged && routeNeedLogin(to.path))
         next('/login');
     else if(isLogged && !routeNeedLogin(to.path))
-        next('/');
-    else
-        next();
+        next('/carteiras');
+    else{
+        if(to.path == '/')
+            next('/carteiras')
+        else
+            next();
+    }
+
 });
 
 export default router;

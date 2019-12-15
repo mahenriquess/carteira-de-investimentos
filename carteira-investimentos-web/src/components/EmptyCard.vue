@@ -1,15 +1,13 @@
 <template>
 
-
-        <v-btn
-            text="+"
-            color="deep-gray accent-4"
-            class="empty"
-            max-width="344"
-            @click="onClick"
-        >
-        +
-        </v-btn>
+    <v-card
+        class="mx-auto empty"
+        max-width="220"
+        @click="onClick"
+        elevation="2"
+    >
+        <v-subheader>Adicionar Novo</v-subheader>
+        
         <!-- <v-card-actions>
         <v-btn
             text
@@ -19,7 +17,8 @@
             Deletar
         </v-btn>
         </v-card-actions> -->
-  
+
+    </v-card>
 </template>
 
 <script>
@@ -79,9 +78,8 @@ export default {
     display:flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
-    border: 2px dotted gray !important;
+    height: 21vw;
+    border: 3px dotted gray !important;
     background: white !important;
 }
 .moreItem{

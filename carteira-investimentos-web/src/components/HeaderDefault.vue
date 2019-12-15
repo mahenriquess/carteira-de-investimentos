@@ -5,15 +5,14 @@
   </div> -->
   <div>
     <v-app-bar
-      :color="colorBar"
+      color="primary"
       dark
     >
-      <v-btn text icon color="white" @click="$router.go(-1)">
-        <v-icon>mdi-arrow-left-thick</v-icon>
+      <v-btn text icon color="white" @click="$store.dispatch('toggleDrawer')">
+        <v-icon>mdi-menu</v-icon>
       </v-btn>
-      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-      <v-toolbar-title>Você tem R$ {{valorDisponivel}} restantes para distribuir em seus ativos.</v-toolbar-title>
+      <v-toolbar-title>{{title}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -28,8 +27,7 @@ export default {
     return {
     }
   },
-  props:['valorDisponivel','colorBar'],
-  
+  props:['title'],
   methods: {
 
   }

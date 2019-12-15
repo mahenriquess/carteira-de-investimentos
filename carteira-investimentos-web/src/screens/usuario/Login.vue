@@ -15,9 +15,9 @@
                     </v-alert>
                     <v-card-text v-bind:class="{'disabled':($store.getters.loading)}">
                         <v-form>
-                            <v-text-field  v-model="usuario.email"  label="Email" :rules="emailRules"  required ></v-text-field>
+                            <v-text-field  v-model="usuario.email"  label="Email" required ></v-text-field>
 
-                            <v-text-field   v-model="usuario.senha" label="Senha" :rules="passwordRules" type="password" required ></v-text-field>
+                            <v-text-field   v-model="usuario.senha" label="Senha" type="password" required ></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-card-actions v-bind:class="{'disabled':($store.getters.loading)}">
@@ -69,7 +69,13 @@
                     await this.$store.dispatch('signin',this.usuario);
                     this.erroLogin = false;
                     this.successLogin = true;
+                    this.$store.dispatch('atualizaUsuarioLogado');
+                    setTimeout(() => {
+                        this.$store.dispatch('loadCarteiras');
+                    },500)
+                    
                     this.$router.push('/');
+                    
                 }catch(e) {
                     this.erroLogin = true;
                 }

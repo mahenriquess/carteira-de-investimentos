@@ -1,8 +1,10 @@
 <template>
     <div>
-        <v-progress-linear :active="loadingCarteiras" indeterminate absolute color="light-purple lighten-1"></v-progress-linear> 
+        <!-- <v-progress-linear :active="loadingCarteiras" indeterminate absolute color="light-purple lighten-1"></v-progress-linear>  -->
+
+        <HeaderDefault title="Carteiras" />
         <v-row justify="center">
-            <template v-for="(carteira, index) in $store.getters.carteiras">
+            <template v-for="(carteira, index) in myCarteiras">
                 <v-col :key="carteira.id">
                     <Carteira :carteira="carteira" /> 
                 </v-col>
@@ -18,7 +20,7 @@
 
         <v-fab-transition>
             <v-btn
-                color="pink"
+                color="primary"
                 v-show="!$store.getters.carteiraIsLoading"
                 fab
                 dark
@@ -52,26 +54,21 @@
 
 import Carteira from './../components/Carteira';
 import FormCarteira from './../components/FormCarteira';
+import HeaderDefault from './../components/HeaderDefault';
 
 export default {
-    components:{Carteira,FormCarteira},
-    async created() {
-        try{
-            this.$store.dispatch('loadCarteiras');
-        }catch(err){
-            console.log(err);
-        }finally {
-            this.loadingCarteiras = false;
-        }
-    },
+    components:{Carteira,FormCarteira,HeaderDefault},
+   
     data() {
         return {
-            carteiras: [
-                {id: 1 ,title: 'Carteira 1', preco:105.30},
-                {id: 2, title: 'Carteira 2', preco:2000.75},
-            ],
+            
             dialog:false,
             loadingCarteiras: true
+        }
+    },
+    computed: {
+        myCarteiras() {
+            return this.$store.getters.carteiras
         }
     },
     methods: {
@@ -81,6 +78,7 @@ export default {
         async saveCarteira() {
 
             const {errors, hasError} = this.$refs.formCarteira.getErrors();
+
             if(hasError){
                 console.log(errors);
                 let msg = "";
@@ -89,16 +87,12 @@ export default {
                 return;
             }
 
-            
-            
             const {nome, valor} = this.$refs.formCarteira.getDataForm();
 
-            this.dialog=false;
+            this.dialog = false;
             this.$refs.formCarteira.clearFields();
             try {
-                
                 await this.$store.dispatch('addCarteira',{nome, valor});
-                
             }catch(e) {
                 console.warn(e);
             }

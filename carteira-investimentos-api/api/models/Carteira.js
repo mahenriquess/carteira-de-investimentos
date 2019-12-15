@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 class Carteira extends Model {
   	static init(sequelize) {
-		console.log("Registrando Modulo de Usuário");
+		console.log("Registrando Modulo de Carteira");
 
 		super.init({
 			nome: DataTypes.STRING,

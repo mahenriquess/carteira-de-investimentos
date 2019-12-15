@@ -16,13 +16,13 @@
                 Cadastro efetuado com sucesso ! Você será redirecionado.
             </v-alert>
             <v-card-text v-bind:class="{'disabled':($store.getters.loading)}">
-                <v-text-field v-model="usuario.email" :rules="emailRules" label="Email" required ></v-text-field>
+                <v-text-field v-model="usuario.email" label="Email" required ></v-text-field>
 
-                <v-text-field v-model="usuario.nome" :rules="nameRules" label="Nome" required ></v-text-field>
+                <v-text-field v-model="usuario.nome"  label="Nome" required ></v-text-field>
 
-                <v-text-field v-model="usuario.sobrenome" :rules="sobrenomeRules" label="Sobrenome" required ></v-text-field>
+                <v-text-field v-model="usuario.sobrenome"  label="Sobrenome" required ></v-text-field>
 
-                <v-text-field  v-model="usuario.senha" :rules="passwordRules" label="Senha" type="password" required ></v-text-field>
+                <v-text-field  v-model="usuario.senha" label="Senha" type="password" required ></v-text-field>
             </v-card-text>
             <v-card-actions v-bind:class="{'disabled':($store.getters.loading)}">
                 <v-row>

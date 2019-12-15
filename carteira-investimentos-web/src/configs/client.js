@@ -8,8 +8,11 @@ const client = axios.create({
 
 const usuario = VueCookies.get('usuario');
 
-if(usuario){
+if(usuario) {
     client.defaults.headers.common['Authorization'] = `bearer ${usuario.token}`;
 }
 
+client.defaults.headers['Access-Control-Allow-Origin'] = '*';
+
+console.log("After Login",client.defaults.headers);
 export default client;

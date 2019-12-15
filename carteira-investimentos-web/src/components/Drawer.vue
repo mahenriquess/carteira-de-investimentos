@@ -1,9 +1,8 @@
 <template>
   <v-navigation-drawer
     id="app-drawer"
-    v-model="inputValue"
+    v-model="$store.state.drawer"
     app
-    
     floating
     persistent
     mobile-break-point="991"
@@ -59,12 +58,6 @@ export default {
     return {
     inputValue:true,
     links: [
-        
-      {
-        to: '/',
-        icon: 'mdi-view-dashboard',
-        text: 'Dashboard'
-      },
       {
         to: '/carteiras',
         icon: 'fa-wallet',

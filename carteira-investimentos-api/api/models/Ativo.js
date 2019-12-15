@@ -8,6 +8,11 @@ class Ativo extends Model {
 			tipo: DataTypes.STRING,
 			codigoEmpresa: DataTypes.STRING,
 			valorCompra: DataTypes.DECIMAL(14, 2),
+			valorMoedaCompra: DataTypes.DECIMAL(14, 2),
+			valorMoedaUltimaAtualizacao: DataTypes.DECIMAL(14, 2),
+			qtdAcoes: DataTypes.INTEGER,
+			tipoMoeda: DataTypes.STRING,
+			idCarteira: DataTypes.INTEGER,
 		}, {
 			sequelize
 		})

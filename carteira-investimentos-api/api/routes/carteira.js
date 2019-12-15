@@ -21,5 +21,8 @@ module.exports = app => {
     app.post(`${prefix}/ativo`, (req, res) => {
         app.api.controllers.carteira.addAtivo(app, req, res);
     })
+    app.delete(`${prefix}/ativo/:idAtivo`, (req, res) => {
+        app.api.controllers.carteira.venderAtivo(app, req, res);
+    })
 
 }

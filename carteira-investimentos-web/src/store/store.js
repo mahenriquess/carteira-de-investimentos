@@ -5,16 +5,17 @@ import usuario from './module/usuario';
 import carteira from './module/carteira';
 import ativo from './module/ativo';
 
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         usuario,
         carteira,
+        ativo
     },
     state: {
-        loading:false
+        loading:false,
+        drawer: true,
     },
     mutations: {
         initLoading(state) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
         },
         dismissLoading(state) {
             state.loading = false;
+        },
+        toggleDrawer(state) {
+            state.drawer = !state.drawer;
         }
     },
     actions: {
@@ -30,11 +34,18 @@ export default new Vuex.Store({
         },
         dismissLoading({ commit }) {
             commit('dismissLoading');
+        },
+        toggleDrawer({commit}) {
+            console.log("Abrir/fechar drawer")
+            commit('toggleDrawer');
         }
     },
     getters: {
         loading(state){
             return state.loading;
+        },
+        drawer(state) {
+            return state.drawer;
         }
     }
 });

@@ -14,14 +14,14 @@
     <v-card-actions>
       <v-btn
         text
-        color="deep-purple accent-4"
+        color="red accent-4"
         @click="deletar"
       >
         Deletar
       </v-btn>
       <v-btn
         text
-        color="deep-purple accent-4"
+        color="blue darken-4"
         @click="ativos"
       >
         Ver Ativos

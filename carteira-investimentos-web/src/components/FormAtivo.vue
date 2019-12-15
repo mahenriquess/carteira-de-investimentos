@@ -11,7 +11,7 @@
             <!-- <v-text-field v-model="ativo.tipo" label="Tipo Ativo" required></v-text-field> -->
           </v-col>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field  v-model="ativo.valorCompra" prefix="R$" label="Valor investido" required></v-text-field>
+            <v-text-field  v-model="ativo.qtdAcoes" label="Quantidade de ações" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="6">
             <v-text-field v-model="ativo.codigoEmpresa" v-on:blur="popularEmpresa" label="Código da empresa"></v-text-field>
@@ -25,6 +25,9 @@
           <v-col cols="12" sm="6" md="6">
             <v-text-field  :loading="loadingEmpresa" v-model="empresa.moeda" disabled label="Tipo de moeda"></v-text-field>
           </v-col>
+          <v-col cols="12" sm="12" md="12">
+            <v-text-field :rules="rules" v-model="valorFinalCompra" disabled prefix="R$" label="Valor Final da Compra"></v-text-field>
+          </v-col>
         </v-row>
       </v-container>
     </v-card-text>
@@ -36,16 +39,37 @@ import client from '../configs/client';
 export default {
   data() {
     return {
-        ativo: {
-            tipo: "",
-            valorCompra: 0,
-            codigoEmpresa: '',
-        },
-        empresa: {},
-        tipos: [
-          'Bolsa de valores'
-        ],
-        loadingEmpresa:false
+      ativo: {
+          tipo: "",
+          valorCompra: 0,
+          qtdAcoes: 0,
+          codigoEmpresa: '',
+      },
+      empresa: {},
+      tipos: [
+        'Bolsa de valores'
+      ],
+      loadingEmpresa:false,
+      rules: [
+        value => {
+          console.log(this.valorFinalCompra,this.carteira.valor);
+          return this.valorFinalAcceptable || 'O valor final excede o valor disponível em sua carteira';
+        }
+      ]
+    }
+  },
+  computed: {
+    valorFinalAcceptable() {
+      if(!this.valorFinalCompra){
+        return true;
+      }
+      return parseFloat(this.valorFinalCompra) <= parseFloat(this.carteira.valor)
+    },
+    valorFinalCompra() {
+      if(!this.ativo.qtdAcoes || !this.empresa || !this.empresa.preco){
+        return "";
+      }
+      return (parseFloat(this.ativo.qtdAcoes) * parseFloat(this.empresa.preco)).toFixed(2);
     }
   },
   props: ['carteira'],
@@ -68,17 +92,20 @@ export default {
       }
     },
     getDataForm() {
-      const ativo = { ...this.ativo };
-      if(ativo.valorCompra){
-        ativo.valorCompra = ativo.valorCompra * this.empresa.preco;
-      }
+      const ativo = { ...this.ativo, valorMoedaCompra: this.empresa.preco, tipoMoeda: this.empresa.moeda };
+      
+      ativo.valorCompra = ativo.qtdAcoes * this.empresa.preco;
+      
       return ativo;
     },
 
     getErrors() {
       const errors = [];
 
-      if(this.carteira.valor < this.ativo.valorCompra){
+      if(!this.ativo.qtdAcoes){
+        errors.push('Preencha a quantidade de ações e serem investidas');
+      }
+      if(!this.valorFinalAcceptable) {
         errors.push('O valor deve ser igual ou inferior ao seu saldo disponível na carteira.');
       }
 
@@ -90,10 +117,12 @@ export default {
     },
 
     clearFields() {
-      this.carteira = {
-        nome: '',
-        valor: 0
-      }
+      this.ativo = {
+        tipo: "",
+        valorCompra: 0,
+        codigoEmpresa: '',
+      };
+      this.empresa = {};
     }
 
   }

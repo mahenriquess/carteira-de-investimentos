@@ -1,4 +1,5 @@
 const Carteira = require('../models/Carteira');
+const Ativo = require('../models/Ativo');
 
 const association = {
     include: [
@@ -24,7 +25,14 @@ module.exports = {
             ...association
         });
 
-        console.log(carteiras);
+        carteiras.map(carteira => {
+            carteira.valorDisponivel = carteira.valor;
+            carteira.ativos.forEach(ativo => {
+                carteira.valorDisponivel -= ativo.valorCompra
+                carteira.valorDisponivel = parseFloat(carteira.valorDisponivel).toFixed(2)
+            })
+            return carteira;
+        });
 
         return res.send(carteiras);
     },
@@ -39,12 +47,16 @@ module.exports = {
             id_usuario: req.user.id
         });
 
-        console.log(carteiraSaved);
 
-        if(carteiraSaved)
-            return res.status(201).send(carteiraSaved);
-        else
+        // console.log(carteiraSaved);
+        
+        if(carteiraSaved){
+            const newCarteira = await Carteira.findByPk(carteiraSaved.id,association);
+            return res.status(201).json(newCarteira);
+        }
+        else{
             return res.status(500).send('Erro ao salvar carteira');
+        }
         
     },
 
@@ -76,7 +88,8 @@ module.exports = {
     },
 
     addAtivo: async (app, req, res) => {
-        const { idCarteira, ativo } = req.body;
+        const { idCarteira } = req.body;
+        const { tipo, codigoEmpresa, valorCompra, valorMoedaCompra,tipoMoeda, qtdAcoes } = req.body.ativo;
         if(!idCarteira){
             return res.status(400).send({message: "Necessário informar carteira que deve ser adicionado o ativo"});
         }
@@ -87,13 +100,35 @@ module.exports = {
             return res.status(401).send({message: "Carteira não encontrada"});
         }
 
-        const ativoCreated = await carteira.addAtivo(ativo);
-
-        if(ativoCreated){
-            return res.send({message: `Ativo adicioando com sucesso à carteira ${carteira.nome}`});
+        try{
+            const [ ativo ] = await Ativo.findOrCreate({ where: { tipo, codigoEmpresa: codigoEmpresa.toUpperCase(), valorCompra, valorMoedaCompra, valorMoedaUltimaAtualizacao: valorMoedaCompra, tipoMoeda, qtdAcoes } });
+            await carteira.addAtivo(ativo);
+            await carteira.update({valor: carteira.valor - valorCompra});
+            res.json(ativo);
+        }catch(err) {
+            console.log(err);
+            return res.status(500).send({message: "Erro ao salvar ativo"});
         }
+    },
 
-        return res.status(500).send({message: "Erro ao salvar ativo"});
+    venderAtivo: async (app, req, res) => {
+        const { idAtivo } = req.params;
 
+        try{
+            const ativo = await Ativo.findByPk(idAtivo, { include: {association: 'carteira'} });
+
+            if(!ativo || !ativo.carteira){
+                return res.status(404).send({message: "Nenhum ativo encontrado"});
+            }
+    
+            const newValorCarteira = parseFloat(ativo.carteira.valor) + parseFloat(ativo.valorCompra);
+            await ativo.carteira.removeAtivo(ativo);
+            await ativo.carteira.update({ valor: newValorCarteira });
+            res.json(ativo);
+        }catch(err){
+            console.log(err);
+            return res.status(500).send({message: "Erro ao remover ativo"});
+        }
+        
     }
 }
