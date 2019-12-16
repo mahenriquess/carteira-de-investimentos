@@ -11,7 +11,7 @@
                 </v-toolbar> 
                 <v-card class=" card elevation-12 pa-5 pb-5 pt-12">
                     <v-alert type="error" v-model="erroLogin">
-                        Erro ao efeturar login
+                        Erro ao efetuar login!
                     </v-alert>
                     <v-card-text v-bind:class="{'disabled':($store.getters.loading)}">
                         <v-form>

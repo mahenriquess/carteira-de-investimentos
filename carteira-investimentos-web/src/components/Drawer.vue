@@ -17,7 +17,8 @@
 
           <v-list-item-content>
             <v-list-item-title>{{$store.getters.usuario.nome}}</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+            <v-list-item-subtitle>({{$store.getters.usuario.email}})</v-list-item-subtitle>
+            <v-list-item-subtitle>Logado</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -38,7 +39,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn  @click="deslogar" block>Logout</v-btn>
+          <v-btn  @click="deslogar" block>SAIR</v-btn>
         </div>
       </template>
   </v-navigation-drawer>

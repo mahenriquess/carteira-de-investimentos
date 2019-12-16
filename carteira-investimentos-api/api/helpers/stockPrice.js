@@ -10,6 +10,7 @@ module.exports = {
 
         const { results } = data;
         const details = results[symbol.toUpperCase()];
+        
         return {
             simbolo: details.symbol,
             nome: details.name,

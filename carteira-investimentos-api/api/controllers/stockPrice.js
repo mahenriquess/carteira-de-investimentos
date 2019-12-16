@@ -9,6 +9,7 @@ module.exports = {
             const data = await stockPriceHelper.getData(req.params.symbol.toUpperCase()); 
             const ativos = await Ativo.findAll({ where: { codigoEmpresa: data.simbolo }});
 
+    
             // data.preco = 15.96;
             ativos.forEach(ativo => {
                 const valorCompra = ativo.qtdAcoes * data.preco;
@@ -52,7 +53,7 @@ module.exports = {
             const data = await History.findOne({simbolo: simbolo.toUpperCase()}).sort({'updated_at': -1});
             res.json(data);
         }catch(err){
-            res.status(500).send({message: "Erro ao buscar ultimo histórico da empresa "+simbolo});
+            res.status(500).send({message: "Erro ao buscar ultimo histórico da empresa " + simbolo});
         }
     },
 

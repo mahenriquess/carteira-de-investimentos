@@ -8,13 +8,14 @@
       >
           <v-card-text>
           <p class="display-1" :class="colorVariacaoMoeda">
-              {{ativo.codigoEmpresa}} ({{percentualRendimento}}%) <v-icon :color="colorButton">{{iconVariant}}</v-icon>
+              {{ativo.nomeEmpresa}}{{ativo.codigoEmpresa}} ({{percentualRendimento}}%) <v-icon :color="colorButton">{{iconVariant}}</v-icon>
           </p>
-          <p >Valor da ação no momento da compra: {{ativo.valorMoedaCompra}}</p>
-          <p :class="colorVariacaoMoeda">Valor de uma ação neste momento: {{ativo.valorMoedaUltimaAtualizacao}}</p>
+          
+          <p >Valor da ação no momento da compra: <strong>{{ativo.valorMoedaCompra}}</strong></p>
+          <p :class="colorVariacaoMoeda">Valor de uma ação neste momento: <strong>{{ativo.valorMoedaUltimaAtualizacao}}</strong></p>
           <!-- <p :class="colorVariacaoMoeda">Percentual de rendimento: {{percentualRendimento}}%</p> -->
-          <p :class="colorVariacaoMoeda">Valor Atual deste ativo: {{valor}}</p>
-          <p>Quantidade de ações: {{ativo.qtdAcoes}}</p>
+          <p>Quantidade de ações: <strong>{{ativo.qtdAcoes}}</strong></p>
+          <p :class="colorVariacaoMoeda">Valor atual deste ativo é de <br/><span class="display-1">{{valor}}</span></p>
           </v-card-text>
           <v-card-actions>
           <v-btn
@@ -60,7 +61,7 @@ export default {
       loading: false,
       venderAcoes: false,
       rules: [
-        () => this.qtdVendaIndisponivel || `Você não pode vender mais ações do que obtem. (Você tem ${this.ativo.qtdAcoes} ações)`,
+        () => this.qtdVendaIndisponivel || `Você não pode vender mais ações do que obtém. (Você tem ${this.ativo.qtdAcoes} ações)`,
         () => this.qtdAcoesVenda > 0 || `Para efeturar a venda, é necessário selecionar 1 ação no mínimo.`
       ],
       qtdAcoesVenda:null
@@ -92,6 +93,8 @@ export default {
       }
     },
     percentualRendimento() {
+      console.log(this.ativo);
+      
       const a = parseFloat(this.ativo.valorMoedaUltimaAtualizacao);
       const b = parseFloat(this.ativo.valorMoedaCompra);
       var result = (a * 100) / b;

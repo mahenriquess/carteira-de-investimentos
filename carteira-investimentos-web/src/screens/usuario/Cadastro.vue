@@ -13,7 +13,7 @@
                 Erro ao efetuar cadastro. Preencha os campos adequadamente.
             </v-alert>
             <v-alert type="success" v-model="cadastroSuccess">
-                Cadastro efetuado com sucesso ! Você será redirecionado.
+                Cadastro efetuado com sucesso! Você será redirecionado para o login.
             </v-alert>
             <v-card-text v-bind:class="{'disabled':($store.getters.loading)}">
                 <v-text-field v-model="usuario.email" label="Email" required ></v-text-field>

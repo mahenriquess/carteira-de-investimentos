@@ -3,10 +3,10 @@
       <v-container>
         <v-row>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field v-model="carteira.nome" label="Nome da carteira" required></v-text-field>
+            <v-text-field v-model="carteira.nome" label="Nome da carteira" hint="Dê um nome fácil de identificá-la!" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field v-model="carteira.valor" label="Valor da carteira" hint="example of helper text only on focus"></v-text-field>
+            <v-text-field v-model="carteira.valor" label="Valor da carteira" hint="Utilize este valor para simular seus investimentos! "></v-text-field>
           </v-col>
           
         </v-row>

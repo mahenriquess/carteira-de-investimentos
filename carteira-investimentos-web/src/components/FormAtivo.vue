@@ -79,12 +79,18 @@ export default {
         this.loadingEmpresa = true;
         try{
           const {data} = await client.get(`/stock-price/${this.ativo.codigoEmpresa}`);
+          console.log(data);
           if(data){
             this.empresa = data;
-          }else{
-            this.empresa = {};
+          } else { 
+            dataCron = await client.get(`/stock-price-cron/${this.ativo.codigoEmpresa}`)
+            if(dataCron) {
+              this.empresa = dataCron;
+            } else 
+              this.empresa = {};
           }
         }catch(err){
+          console.log("Erro ao tentar popular dados da empresa. ");
           this.empresa = {}
         }finally{
           this.loadingEmpresa = false;
