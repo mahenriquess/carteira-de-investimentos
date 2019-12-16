@@ -21,7 +21,7 @@ export default {
     return {
       carteira: {
           nome: "",
-          valor: 0,
+          valor: null,
       },
     }
   },
@@ -34,8 +34,17 @@ export default {
       const errors = [];
 
       console.log(this.carteira.nome.length);
-      if(this.carteira.nome.length <= 5){
-        errors.push('A carteira deve conter mais de 5 caracteres')
+
+      if(!this.carteira.nome){
+        errors.push('O nome da carteira é obrigatório.');
+      }
+
+      if(!this.carteira.valor){
+        errors.push('O valor da carteira é obrigatório.');
+      }
+
+      if(this.carteira.nome.length <= 3){
+        errors.push('A carteira deve conter mais de 3 caracteres')
       }
 
       if(this.carteira.valor < 300){

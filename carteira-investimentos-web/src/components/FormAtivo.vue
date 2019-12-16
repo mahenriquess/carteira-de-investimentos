@@ -14,7 +14,7 @@
             <v-text-field  v-model="ativo.qtdAcoes" label="Quantidade de ações" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field v-model="ativo.codigoEmpresa" v-on:blur="popularEmpresa" label="Código da empresa"></v-text-field>
+            <v-text-field v-model="ativo.codigoEmpresa" :disabled="!tipoAtivoSelected" v-on:blur="popularEmpresa" label="Código da empresa"></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="6">
             <v-text-field :loading="loadingEmpresa" v-model="empresa.preco" disabled label="Valor Atual da ação"></v-text-field>
@@ -59,6 +59,9 @@ export default {
     }
   },
   computed: {
+    tipoAtivoSelected() {
+      return !!this.ativo.tipo;
+    },
     valorFinalAcceptable() {
       if(!this.valorFinalCompra){
         return true;
@@ -78,14 +81,14 @@ export default {
       if(this.ativo.codigoEmpresa && this.ativo.codigoEmpresa != this.empresa.simbolo){
         this.loadingEmpresa = true;
         try{
-          const {data} = await client.get(`/stock-price/${this.ativo.codigoEmpresa}`);
+          let {data} = await client.get(`/stock-price/${this.ativo.codigoEmpresa}`);
           console.log(data);
           if(data){
-            this.empresa = data;
-          } else { 
-            dataCron = await client.get(`/stock-price-cron/${this.ativo.codigoEmpresa}`)
-            if(dataCron) {
-              this.empresa = dataCron;
+            this.empresa =  data;  
+          } else {                                                                                                                                                        
+            const dataCron = await client.get(`/stock-price-cron/${this.ativo.codigoEmpresa}`)
+            if(dataCron.data) {
+              this.empresa = dataCron.data;
             } else 
               this.empresa = {};
           }

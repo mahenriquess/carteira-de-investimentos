@@ -3,7 +3,7 @@
 <v-card
     class="mx-auto"
     max-width="344"
-    :loading="carteira.loading"
+    :loading="carteira.loading || loading"
   >
     <v-card-text>
       <p class="display-1 text--primary">
@@ -36,6 +36,11 @@
 import StatsCard from './StatsCard';
 export default {
     components: {StatsCard},
+    data(){
+      return{
+        loading:false
+      }
+    },
     computed: {
       valor() {
         return `R$ ${this.carteira.valor}`
@@ -47,10 +52,13 @@ export default {
     methods: {
       async deletar() {
         try {
-            await this.$store.dispatch('deleteCarteira',this.carteira);
+          this.loading = true;
+          await this.$store.dispatch('deleteCarteira',this.carteira);
             
         }catch(e) {
             console.warn(e);
+        }finally{
+          this.loading = false;
         }
       },
       ativos() {

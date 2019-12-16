@@ -47,6 +47,19 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-snackbar
+            v-model="snackbar"
+            >
+            {{ errorMessage }}
+            <v-btn
+                color="blue"
+                text
+                @click="snackbar = false"
+            >
+                Fechar
+            </v-btn>
+        </v-snackbar>
     </div>
 </template>
 
@@ -63,7 +76,9 @@ export default {
         return {
             
             dialog:false,
-            loadingCarteiras: true
+            loadingCarteiras: true,
+            snackbar:false,
+            errorMessage: "",
         }
     },
     computed: {
@@ -81,9 +96,9 @@ export default {
 
             if(hasError){
                 console.log(errors);
-                let msg = "";
-                errors.forEach(error => msg += error);
-                alert(msg);
+                this.errorMessage = errors[0]
+                this.snackbar=true;
+                // alert(msg);
                 return;
             }
 
